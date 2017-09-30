@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/questionBookListItemsParent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    >
+
+    <ImageView
+        android:id="@+id/questionBooksResult"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center|start"
+        android:layout_width="72dp"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/evalution" />
+
+    <TextView
+        android:id="@+id/textview_questionBooksListItem"
+        style="@style/AppTheme.normalJapaneseTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|start"
+        android:text="@string/placeholder"
+
+        />
+
+</LinearLayout>

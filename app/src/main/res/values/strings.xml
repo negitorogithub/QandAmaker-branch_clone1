@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">QandAmaker</string>
+    <string name="action_settings">Settings</string>
+    <string name="question">問題</string>
+    <string name="resultMessage">%1$s問中%2$s問</string>
+    <string name="display_question">問題を表示</string>
+    <string name="display_answer">解答を表示</string>
+    <string name="answer">解答</string>
+    <string name="correct">正解</string>
+    <string name="finish">終了</string>
+    <string name="title_activity_question">QuestionActivity</string>
+    <string name="title_activity_detail_quiz">DetailQuizActivity</string>
+    <string name="Qbook_delete">一度消去した問題集と、そのデータは二度と元に戻せません。それでも&lt;u>&lt;i>&lt;b>%1$s&lt;/b>&lt;/i>&lt;/u>を消去しますか？</string>
+    <string name="hint_question_name">問題集名</string>
+    <string name="tag">カテゴリー</string>
+    <string name="tagEditMessage">新しいカテゴリーの名前を入力してください</string>
+    <string name="tagSpinnerPrompt">カテゴリーを選択してください</string>
+    <string name="prompt">プロンプト</string>
+    <string name="test">test</string>
+    <string name="questionInputEmpty">問題を入力してください</string>
+    <string name="answerInputEmpty">解答を入力してください</string>
+    <string name="tagSpinnerEmpty">タグを選択してください</string>
+    <string name="tagInputEmpty">タグの名前を入力してください</string>
+    <item name="viewpager" type="id" />
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="evalution">evalution</string>
+    <string name="placeholder">placeholder</string>
+    <string name="results">results</string>
+    <string name="memory">暗記する!</string>
+    <string name="exam">exam</string>
+    <string name="tag_header">タグ:#%1$s</string>
+    <string name="same_question_exsits">同じ問題があります  違う問題を入力してください</string>
+    <string name="same_tag_exists">同じ名前のタグがあります  違うタグの名前を入力してください</string>
+    <string name="random">ランダム</string>
+    <string name="recommended">おすすめ</string>
+    <string name="qusstion">問</string>
+    <string name="close">close</string>
+    <string name="ok">Ok</string>
+    <string name="emptyOnMain1">問題集がありません。問題集を追加するには、右下の[+]ボタンを押してください。</string>
+    <string name="emptyOnMain2">問題がありません。問題を追加するには、右下の[+]ボタンを押してください。</string>
+</resources>
