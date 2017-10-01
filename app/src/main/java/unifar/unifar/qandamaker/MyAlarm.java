@@ -24,14 +24,13 @@ public class MyAlarm extends DialogFragment {
         }else{
         charSequence_Qbook_delete =Html.fromHtml(Qbook_delete, Html.FROM_HTML_MODE_LEGACY);
         }
-        final MainActivity mainActivity = new MainActivity();
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Warning!")
                 .setMessage(charSequence_Qbook_delete)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mainActivity.onClickOk_myalarm();
+                        MainActivity.onClickOk_myalarm();
                     }
                 })
                 .setNegativeButton("Cancel", null)

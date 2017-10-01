@@ -28,7 +28,7 @@ public class Fragment_flash extends Fragment  {
     public String str_answer_name;
     public static ViewPager mViewPager;
     public static int int_seekBar_progress;
-
+    TextView textView_switch;
     private OnFragmentInteractionListener mListener;
     private ParentActivityFinishInterface parentActivityFinishInterface;
 
@@ -58,7 +58,7 @@ public class Fragment_flash extends Fragment  {
         // Inflate the layout for this fragment
         View rootView;
         rootView = inflater.inflate(R.layout.fragment_fragment_flash, container,false);
-        final TextView textView_switch = (TextView)rootView.findViewById(R.id.textview_switch);
+        textView_switch = (TextView)rootView.findViewById(R.id.textview_switch);
         SeekBar seekBar = (SeekBar)rootView.findViewById(R.id.seekBar_flash);
         int_seekBar_progress = 500;
         seekBar.setProgress(int_seekBar_progress);

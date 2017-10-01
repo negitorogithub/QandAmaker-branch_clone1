@@ -24,10 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static unifar.unifar.qandamaker.MainActivity.examQuestionsDataBuffer;
-import static unifar.unifar.qandamaker.MainActivity.inputFromFileToArray;
-
 // TODO: 試験終了時をどうにかする
 
 /**
@@ -40,6 +36,7 @@ import static unifar.unifar.qandamaker.MainActivity.inputFromFileToArray;
  */
 public class ExamFragment extends Fragment {
     OnReachedLastQuestionListener onReachedLastQuestionListener;
+    ExamFinishedListener examFinishedListener;
     TextView questionText;
     ListView alternativesListView;
     List<Question> examQuestionsDataArray ;
@@ -88,7 +85,7 @@ public class ExamFragment extends Fragment {
         final int EXAMMODE = getArguments().getInt("examMode");
         alpha = 255;
         final Fragment thisFragment = this;
-
+        List<Question> examQuestionsDataBuffer = new ArrayList<>(MainActivity.mainQuestionsDataBuffer);
         if (EXAMMODE == 1) {
             Random random = new Random();
             long seed = random.nextLong();
@@ -116,9 +113,10 @@ public class ExamFragment extends Fragment {
                 }
 
                 if (questionIndex <IntExamQuestionDataArraySize-1) {
-                        showQuestion(questionIndex+1);
+                    examFinishedListener.onFinishedQuestion(questionIndex+2,QUESTIONAMOUNT);
+                    showQuestion(questionIndex+1);
                     }else{
-                    // 結果発表
+                    //結果発表
                     //処理待ち
                     List<Boolean> examResults = new ArrayList<>();
                     for(int i=0;i<examQuestionsDataArray.size();i++ ) {
@@ -134,7 +132,7 @@ public class ExamFragment extends Fragment {
                     if (onReachedLastQuestionListener != null) {
                         onReachedLastQuestionListener.OnReachedLastQuestion(IntExamQuestionDataArraySize,correct);
                     }
-                    }
+                }
                 }
         });
         return view;
@@ -156,6 +154,12 @@ public class ExamFragment extends Fragment {
         }else{
             throw new ClassCastException("activity が OnOkBtnClickListener を実装していません.");
         }
+        if (context instanceof ExamFinishedListener) {
+            examFinishedListener = (ExamFinishedListener) context;
+        }else{
+            throw new ClassCastException("activity が ExamFinishedListener を実装していません.");
+        }
+
     }
 
     @Override

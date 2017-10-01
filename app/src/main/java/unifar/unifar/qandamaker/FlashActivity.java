@@ -27,7 +27,7 @@ public class FlashActivity extends AppCompatActivity implements Fragment_flash.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarOnFlashActivity);
         toolbar.setBackgroundColor(ContextCompat.getColor(MyApplication.getAppContext(), R.color.colorPrimaryDark));
         toolbar.setTitleTextColor(ContextCompat.getColor(MyApplication.getAppContext(), R.color.white));
-        toolbar.setTitle(question_name);
+        toolbar.setTitle(MainActivity.mainValue);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Fragment_flash fragment_flash = Fragment_flash.newInstance();

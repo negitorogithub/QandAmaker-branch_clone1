@@ -14,7 +14,8 @@ public class ExamActivity extends AppCompatActivity implements
         ExamFragment.OnFragmentInteractionListener,
         OnReachedLastQuestionListener,
         ResultFragment.OnFragmentInteractionListener,
-        OnResultFragmentFinishListener {
+        OnResultFragmentFinishListener ,
+        ExamFinishedListener{
 
     int questionAmount ;
     int examMode;
@@ -36,7 +37,7 @@ public class ExamActivity extends AppCompatActivity implements
         toolbar = (Toolbar) findViewById(R.id.toolbarOnExam);
         toolbar.setBackgroundColor(ContextCompat.getColor(MyApplication.getAppContext(), R.color.colorPrimaryDark));
         toolbar.setTitleTextColor(ContextCompat.getColor(MyApplication.getAppContext(), R.color.white));
-        toolbar.setTitle(MainActivity.mainValue);
+        toolbar.setTitle(getString(R.string.examProgressText,1,questionAmount));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().beginTransaction().add(R.id.examActivityContainer, examfragment).commit();
@@ -70,9 +71,16 @@ public class ExamActivity extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction().add(R.id.examActivityContainer, resultFragment).commit();
     }
 
+
+
     @Override
     public void onResultFragmentFinish() {
         getSupportFragmentManager().beginTransaction().remove(resultFragment).commit();
         finish();
+    }
+
+    @Override
+    public void onFinishedQuestion(int finishedQuestionNumber, int allQuestionAmount) {
+        toolbar.setTitle(getString(R.string.examProgressText,finishedQuestionNumber,allQuestionAmount));
     }
 }

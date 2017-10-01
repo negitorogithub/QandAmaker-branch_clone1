@@ -111,6 +111,9 @@ public class DetailQuizActivity extends AppCompatActivity implements Fragment_fl
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private TextView textview_switch_name;
+        private TextView textview_tag_name;
+
         public PlaceholderFragment() {
         }
 
@@ -130,8 +133,8 @@ public class DetailQuizActivity extends AppCompatActivity implements Fragment_fl
         public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail_quiz, container, false);
-            final TextView textview_switch_name = (TextView) rootView.findViewById(R.id.questionName);
-            final TextView textview_tag_name = (TextView) rootView.findViewById(R.id.textView_tag);
+            textview_switch_name = (TextView) rootView.findViewById(R.id.questionName);
+            textview_tag_name = (TextView) rootView.findViewById(R.id.textView_tag);
             final Bundle bundle = getArguments();
             //MainActivity.reloadLists();
             final List<String> question_Name = MainActivity.getQlistData();

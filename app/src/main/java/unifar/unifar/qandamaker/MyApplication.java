@@ -10,6 +10,7 @@ import com.squareup.leakcanary.LeakCanary;
 public class MyApplication extends Application {
     public static Context context;
     public static Bundle bundle;
+    public static int viewFlag;
     public void onCreate(){
         super.onCreate();
         MyApplication.context = getApplicationContext();
@@ -18,6 +19,7 @@ public class MyApplication extends Application {
         bundle.putString("str_tag_name", "");
         bundle.putBoolean("isRecreated", false);
         bundle.putBoolean("isEditMode", false);
+        viewFlag = 0;
     }
 
     public static Context getAppContext() {

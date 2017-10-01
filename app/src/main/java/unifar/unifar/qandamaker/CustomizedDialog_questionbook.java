@@ -69,8 +69,8 @@ public class CustomizedDialog_questionbook extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         Log.d("onqbook","onDetach");
-        if (MainActivity.viewFlag == 3) {
-            MainActivity.viewFlag = 2;
+        if (MyApplication.viewFlag == 3) {
+            MyApplication.viewFlag = 2;
             Log.d("onqbook", "3 -> 2");
             if (MyApplication.bundle.getBoolean(IsRecreatedKeyStr)) {
                 CustomizedDialog_questionbook customizedDialog_questionbook = new CustomizedDialog_questionbook();
@@ -86,10 +86,10 @@ public class CustomizedDialog_questionbook extends DialogFragment {
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        if (MainActivity.viewFlag != 1 && MainActivity.viewFlag != 2 && MainActivity.viewFlag != 3){
-            Log.d("onqbook","viewFlag:"+MainActivity.viewFlag+"に対応するダイアログはありません。");
+        if (MyApplication.viewFlag != 1 && MyApplication.viewFlag != 2 && MyApplication.viewFlag != 3){
+            Log.d("onqbook","viewFlag:"+MyApplication.viewFlag+"に対応するダイアログはありません。");
         } else {
-            switch (MainActivity.viewFlag) {
+            switch (MyApplication.viewFlag) {
 
                 case 1:
                     view = inflater.inflate(R.layout.questionbookinput,null , false);
@@ -111,10 +111,10 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                                 if (!MyApplication.bundle.getBoolean(IsRecreatedKeyStr)) {
                                     if (position == 0) {
                                         //タグ新規作成のダイアログ作成
-                                        if (MainActivity.viewFlag == 2) {
+                                        if (MyApplication.viewFlag == 2) {
                                             MyApplication.bundle.putString("answerStr", ifNullReplace(String.valueOf(answerInput.getText())));
                                             MyApplication.bundle.putString("questionStr", ifNullReplace(String.valueOf(et_question.getText())));
-                                            MainActivity.viewFlag = 3;
+                                            MyApplication.viewFlag = 3;
                                             Log.d("onqbook", "2 -> 3");
                                         }
                                         final CustomizedDialog_questionbook dialog = new CustomizedDialog_questionbook();
@@ -152,7 +152,7 @@ public class CustomizedDialog_questionbook extends DialogFragment {
         // viewflag = 2 のときのみ存在
 
         if (MyApplication.bundle.getBoolean(IsRecreatedKeyStr)){
-            if (MainActivity.viewFlag == 2) {
+            if (MyApplication.viewFlag == 2) {
                 et_question.setText(MyApplication.bundle.getString("questionStr"));
                 answerInput.setText(MyApplication.bundle.getString("answerStr"));
                 int newTagPosition = MainActivity.getQlistData().size() + 1;
@@ -163,7 +163,7 @@ public class CustomizedDialog_questionbook extends DialogFragment {
             }
         } else if(MyApplication.bundle.getBoolean("isEditMode")){
 
-            if (MainActivity.viewFlag ==2 ) {
+            if (MyApplication.viewFlag ==2 ) {
                 et_question.setText(CustomizedDialog_questionbook.questionName);
                 answerInput.setText(CustomizedDialog_questionbook.answerName);
                 tagSpinner.setSelection(tagSpinnerAdapter.getPosition(CustomizedDialog_questionbook.tagName), true);
@@ -177,12 +177,12 @@ public class CustomizedDialog_questionbook extends DialogFragment {
 
             public void onClick(View v){
 
-                if (MainActivity.viewFlag ==1 || MainActivity.viewFlag ==2 ) {
+                if (MyApplication.viewFlag ==1 || MyApplication.viewFlag ==2 ) {
                     if (ifNullReplace(String.valueOf(et_question.getText())).equals("")){
                         Toast.makeText(MyApplication.getAppContext(), getString(R.string.questionInputEmpty),Toast.LENGTH_LONG).show();
                         return;
                     }
-                    if (MainActivity.makeListFromQuetionArray(MainActivity.examQuestionsDataBuffer, MainActivity.INT_QfileQuestionIndex).contains(ifNullReplace(String.valueOf(et_question.getText())))) {
+                    if (MainActivity.makeListFromQuetionArray(MainActivity.mainQuestionsDataBuffer, MainActivity.INT_QfileQuestionIndex).contains(ifNullReplace(String.valueOf(et_question.getText())))) {
                         if (!(MyApplication.bundle.getBoolean("isEditMode"))) {
                             Toast.makeText(MyApplication.getAppContext(), R.string.same_question_exsits,Toast.LENGTH_LONG).show();
                             return;
@@ -192,7 +192,7 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                         MyApplication.bundle.putString("questionStr",ifNullReplace(String.valueOf(et_question.getText())));
 
 
-                    if (MainActivity.viewFlag == 2) {
+                    if (MyApplication.viewFlag == 2) {
                         if (String.valueOf(answerInput.getText()).equals("")){
                             Toast.makeText(MyApplication.getAppContext(), getString(R.string.answerInputEmpty),Toast.LENGTH_LONG).show();
                             return;
@@ -207,12 +207,12 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                         MyApplication.bundle.putString("str_tag_name",ifNullReplace(String.valueOf(tagSpinner.getSelectedItem())));
                     }
                 }
-                if (MainActivity.viewFlag == 3) {
+                if (MyApplication.viewFlag == 3) {
                     if (String.valueOf(tagInput.getText()).equals("")){
                         Toast.makeText(MyApplication.getAppContext(), getString(R.string.tagInputEmpty),Toast.LENGTH_LONG).show();
                         return;
                     }
-                    if (MainActivity.makeListFromQuetionArray(MainActivity.examQuestionsDataBuffer, MainActivity.INT_QfileTagIndex).contains(ifNullReplace(String.valueOf(tagInput.getText())))) {
+                    if (MainActivity.makeListFromQuetionArray(MainActivity.mainQuestionsDataBuffer, MainActivity.INT_QfileTagIndex).contains(ifNullReplace(String.valueOf(tagInput.getText())))) {
                         if (!(MyApplication.bundle.getBoolean("isEditMode"))) {
                             Toast.makeText(MyApplication.getAppContext(), R.string.same_tag_exists, Toast.LENGTH_LONG).show();
                             return;
@@ -228,8 +228,8 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                                     MyApplication.bundle.getString("questionStr"),
                                     MyApplication.bundle.getString("answerStr"),
                                     MyApplication.bundle.getString("str_tag_name"),
-                                    MainActivity.examQuestionsDataBuffer.get(MainActivity.int_onListViewPositionOn2).getResults(),
-                                    MainActivity.examQuestionsDataBuffer.get(MainActivity.int_onListViewPositionOn2).getIndex()
+                                    MainActivity.mainQuestionsDataBuffer.get(MainActivity.int_onListViewPositionOn2).getResults(),
+                                    MainActivity.mainQuestionsDataBuffer.get(MainActivity.int_onListViewPositionOn2).getIndex()
                                     );
                             dialogListener.onClickOkOnEditMode(question);
                         } else {

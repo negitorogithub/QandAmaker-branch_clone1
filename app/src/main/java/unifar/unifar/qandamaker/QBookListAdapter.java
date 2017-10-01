@@ -63,7 +63,7 @@ class QBookListAdapter extends ArrayAdapter {
         viewHolder.editOnListView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MainActivity.viewFlag==2){
+                if (MyApplication.viewFlag==2){
 
                     CustomizedDialog_questionbook customizedDialog_questionbook = CustomizedDialog_questionbook.newInstance(
                             qlistToShoow.get(position).getQuestionName(),
