@@ -15,13 +15,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
- // TODO:選択肢が一つの場合スキップ機能
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
+// TODO:選択肢が一つの場合スキップ機能
  // TODO:スキップ機能
 public class CustomizedDialog_questionbook extends DialogFragment {
      private static String questionName;
@@ -38,6 +42,9 @@ public class CustomizedDialog_questionbook extends DialogFragment {
     public static final String IsRecreatedKeyStr = "isRecreated";
     String tagArray[];
     static View view;
+    MaterialShowcaseSequence materialShowcaseSequence;
+    ShowcaseConfig config;
+    Space dummy;
     Boolean isOkPressedOn3;
     public static CustomizedDialog_questionbook newInstance() {
         questionName = "";
@@ -97,6 +104,7 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                 break;
                 case 2:
                     Log.d("onqbook","onCreateDialog @viewFlag = 2");
+                    view = inflater.inflate(R.layout.questionbookinput,null , false);
                     addTagSetTotagSpinnerAdapterAndInflateView();
                     et_question = (EditText) view.findViewById(R.id.questionbox);
                     answerInput = (EditText) view.findViewById(R.id.answerbox);
@@ -247,6 +255,33 @@ public class CustomizedDialog_questionbook extends DialogFragment {
         });
         return dialog;
     }
+
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        showTutorial();
+    }
+
+    void showTutorial(){
+        dummy = (Space) view.findViewById(R.id.dummyOnInoutDialog);
+        materialShowcaseSequence = new MaterialShowcaseSequence(getActivity(),"20012");
+        materialShowcaseSequence.setConfig(config);
+        materialShowcaseSequence.addSequenceItem(dummy,
+                "この画面では問題を追加する事ができます  ",
+                getString(R.string.ok));
+        materialShowcaseSequence.addSequenceItem(et_question,
+                "ここに問題を入力します ",
+                getString(R.string.ok));
+        materialShowcaseSequence.addSequenceItem(answerInput,
+                "ここに解答を入力します ",
+                getString(R.string.ok));
+        materialShowcaseSequence.addSequenceItem(et_question,
+                "ここでタグを選択します \n同じタグがつけられた問題が試験の選択肢になります",
+                getString(R.string.ok));
+        materialShowcaseSequence.start();
+    }
+
     @Override
     public  void onActivityCreated(Bundle savedInstansState){
         super.onActivityCreated(savedInstansState);

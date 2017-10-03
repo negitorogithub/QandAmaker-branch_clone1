@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Space;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -36,7 +37,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-// TODO:編集機能の実装
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 // TODO:OnPause()時のBundleの実装
 // TODO:賢いレビュー催促
 public class MainActivity extends AppCompatActivity implements DialogListener, ExamDialogFragment.OnFragmentInteractionListener {
@@ -71,6 +74,13 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
     public MainActivity mainActivity;
     FragmentManager fragmentManager = getFragmentManager();
     Toolbar toolbar;
+    FloatingActionButton fab;
+    ShowcaseConfig config;
+    MaterialShowcaseSequence materialShowcaseSequenceFirst;
+    MaterialShowcaseSequence materialShowcaseSequenceSecond;
+    Space dummy;
+    MaterialShowcaseSequence materialShowcaseSequenceThird;
+    MaterialShowcaseSequence materialShowcaseSequenceForth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
                     //クイズの画面に遷移
                     mainValue = listData.get(int_listview_position);
                     toQlist();
+
                     return;
                 }
                 if (MyApplication.viewFlag == 2) {
@@ -149,8 +160,11 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
             }
         });
 
+        config = new ShowcaseConfig();
+        config.setDelay(500);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         customizedDialog_questionbook = CustomizedDialog_questionbook.newInstance();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
             }
         });
 
+        showFirstTutorial();
 
     }
 
@@ -172,6 +187,83 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
 
     }
 
+    void showFirstTutorial(){
+        dummy = (Space) findViewById(R.id.dummyView);
+        materialShowcaseSequenceFirst = new MaterialShowcaseSequence(this,"10011");
+        materialShowcaseSequenceFirst.setConfig(config);
+
+        materialShowcaseSequenceFirst.addSequenceItem(dummy,
+                "一問一答作成アプリ「Cotton」を\nインストールいただき  \nありがとうございます！\nこれから 簡単なチュートリアルが始まります",
+                getString(R.string.ok));
+
+        materialShowcaseSequenceFirst.addSequenceItem(fab,
+                "新しい問題集を追加するには  \nこの[+]ボタンを押してください",
+                getString(R.string.ok));
+
+        materialShowcaseSequenceFirst.start();
+
+    }
+
+
+    void showQbookAddedTutorial(){
+            materialShowcaseSequenceSecond = new MaterialShowcaseSequence(this,"10021");
+
+            materialShowcaseSequenceSecond.setConfig(config);
+
+            materialShowcaseSequenceSecond.addSequenceItem(dummy,
+                    "問題集が追加できました！ \n 問題集では  問題を作成して試験をすることができます",
+                    getString(R.string.ok));
+
+            materialShowcaseSequenceSecond.addSequenceItem(dummy,
+                    "左の○はその問題集ごとの正答率を表しています\n  赤  オレンジ  黄  緑  青の順番で良くなっています",
+                    getString(R.string.ok));
+
+
+            materialShowcaseSequenceSecond.addSequenceItem(dummy,
+                    "早速クリックしてみましょう！",
+                    getString(R.string.ok));
+            materialShowcaseSequenceSecond.start();
+        }
+    void showQuestionTutorial() {
+                 materialShowcaseSequenceThird = new MaterialShowcaseSequence(this, "10031");
+
+            materialShowcaseSequenceThird.setConfig(config);
+
+            materialShowcaseSequenceThird.addSequenceItem(dummy,
+                    "ここでは問題を追加  削除  編集\nすることができます",
+                    getString(R.string.ok));
+
+            materialShowcaseSequenceThird.addSequenceItem(fab,
+                    "新しい問題を追加するには\nこの[+]ボタンを押してください",
+                    getString(R.string.ok));
+            materialShowcaseSequenceThird.start();
+        }
+
+    void showQuestionAddedTutorial(){
+            materialShowcaseSequenceForth = new MaterialShowcaseSequence(this,"10041");
+            View examView = findViewById(R.id.item_school);
+            materialShowcaseSequenceForth.setConfig(config);
+
+            materialShowcaseSequenceForth.addSequenceItem(dummy,
+                    "問題が追加できました！",
+                    getString(R.string.ok));
+
+            materialShowcaseSequenceForth.addSequenceItem(examView,
+                    "試験をするにはこのアイコンをクリックします\n試験では  選択式の問題が出題されます",
+                    getString(R.string.ok));
+
+            materialShowcaseSequenceForth.addSequenceItem(dummy,
+                    "左の３つの丸は、最近３回の試験で正解した回数を表しています",
+                    getString(R.string.ok));
+            materialShowcaseSequenceForth.addSequenceItem(dummy,
+                    "問題を編集するには、右の鉛筆アイコンをクリックします",
+                getString(R.string.ok));
+            materialShowcaseSequenceForth.addSequenceItem(dummy,
+                    "問題を削除するには、問題を長押しします",
+                getString(R.string.ok));
+
+        materialShowcaseSequenceForth.start();
+        }
     @Override
     public void onResume() {
         super.onResume();
@@ -229,12 +321,13 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
             listData.clear();
             makefiles(MyApplication.bundle.getString("questionStr"));
             inputQbookFiles();
+            showQbookAddedTutorial();
         }
         if (MyApplication.viewFlag == 2) {
             outPutDataToFile();
             MyApplication.bundle.putBoolean("isEditMode", false);
             MyApplication.bundle.putBoolean(CustomizedDialog_questionbook.IsRecreatedKeyStr, false);
-
+            showQuestionAddedTutorial();
         }
         if (MyApplication.viewFlag == 3) {
             if (MyApplication.bundle.getBoolean(CustomizedDialog_questionbook.IsRecreatedKeyStr)) {
@@ -733,6 +826,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
         toolbar.setTitle(mainValue);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        showQuestionTutorial();
     }
 
     private void toQbooksList() {

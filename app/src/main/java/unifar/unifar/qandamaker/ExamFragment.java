@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.widget.Space;
 import android.text.style.QuoteSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 // TODO: 試験終了時をどうにかする
 
@@ -49,6 +53,9 @@ public class ExamFragment extends Fragment {
     Handler handler;
     Runnable r;
     AdView adView;
+    MaterialShowcaseSequence materialShowcaseSequence;
+    ShowcaseConfig config;
+    Space dummy;
     public ExamFragment() {
         // Required empty public constructor
     }
@@ -84,6 +91,8 @@ public class ExamFragment extends Fragment {
         final int QUESTIONAMOUNT = getArguments().getInt("questionAmount");
         final int EXAMMODE = getArguments().getInt("examMode");
         alpha = 255;
+        dummy = (Space) view.findViewById(R.id.dummyOnInoutDialog);
+        config = new ShowcaseConfig();
         final Fragment thisFragment = this;
         List<Question> examQuestionsDataBuffer = new ArrayList<>(MainActivity.mainQuestionsDataBuffer);
         if (EXAMMODE == 1) {
@@ -135,6 +144,8 @@ public class ExamFragment extends Fragment {
                 }
                 }
         });
+
+        config.setDelay(500);
         return view;
     }
 
@@ -167,6 +178,7 @@ public class ExamFragment extends Fragment {
         super.onDetach();
         handler.removeCallbacks(r);
     }
+
 
 
     void showQuestion(int questionIndexarg){
