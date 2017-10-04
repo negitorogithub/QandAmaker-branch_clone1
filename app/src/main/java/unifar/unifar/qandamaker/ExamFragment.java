@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.widget.Space;
 import android.text.style.QuoteSpan;
 import android.view.LayoutInflater;
@@ -16,8 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
@@ -56,6 +59,8 @@ public class ExamFragment extends Fragment {
     MaterialShowcaseSequence materialShowcaseSequence;
     ShowcaseConfig config;
     Space dummy;
+    private InterstitialAd mInterstitialAd;
+
     public ExamFragment() {
         // Required empty public constructor
     }

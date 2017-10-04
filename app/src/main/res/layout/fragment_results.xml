@@ -11,7 +11,7 @@
         android:id="@+id/textViewCorrect"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1"
+        android:layout_weight="0.3"
         android:textColor="@color/colorCollect"
         android:alpha="1.0"
         style="@style/AppTheme.displayJapaneseTextView.1"
@@ -21,31 +21,32 @@
 
     <TextView
         android:id="@+id/textViewResult"
+        style="@style/AppTheme.displayJapaneseTextView.3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:textColor="@color/colorCollect"
+        android:layout_weight="0.4"
         android:alpha="1.0"
-        style="@style/AppTheme.displayJapaneseTextView.3"
         android:gravity="center|center_horizontal"
-        android:text="@string/placeholder" />
+        android:text="@string/placeholder"
+        android:textColor="@color/colorCollect" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adViewOnExamFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-6418178360564076/4181062751"
+        ads:adSize="MEDIUM_RECTANGLE"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+
         />
 
     <Button
         android:id="@+id/buttonFinish"
+        style="@style/Base.Widget.AppCompat.Button.ButtonBar.AlertDialog"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.3"
+        android:layout_gravity="bottom"
+        android:text="@string/finish"
         android:textSize="60sp"
-        style="@style/Base.Widget.AppCompat.Button.ButtonBar.AlertDialog"
-        android:textStyle="normal"
-        android:text="@string/finish" />
+        android:textStyle="normal" />
 </LinearLayout>

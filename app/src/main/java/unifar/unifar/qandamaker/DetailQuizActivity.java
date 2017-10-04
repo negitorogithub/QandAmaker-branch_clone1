@@ -21,6 +21,10 @@ import android.widget.Button;
 import android.widget.Space;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+
 import java.util.List;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
@@ -41,6 +45,8 @@ public class DetailQuizActivity extends AppCompatActivity implements Fragment_fl
      * The {@link ViewPager} that will host the section contents.
      */
     public ViewPager mViewPager;
+    private InterstitialAd mInterstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +68,43 @@ public class DetailQuizActivity extends AppCompatActivity implements Fragment_fl
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         showFirstTutorials();
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Log.i("Ads", "onAdLoaded");
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+                Log.i("Ads", "onAdFailedToLoad");
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+                Log.i("Ads", "onAdOpened");
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+                Log.i("Ads", "onAdLeftApplication");
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the interstitial ad is closed.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                Log.i("Ads", "onAdClosed");
+            }
+        });
+
+
     }
 
     private void showFirstTutorials() {
@@ -97,6 +140,12 @@ public class DetailQuizActivity extends AppCompatActivity implements Fragment_fl
             return true;
         }
         if (id == android.R.id.home) {
+            MyApplication.adCount++;
+            if (mInterstitialAd.isLoaded()) {
+                if (MyApplication.adCount%5 == 2) {
+                    mInterstitialAd.show();
+                }
+            }
             finish();
             return true;
         }

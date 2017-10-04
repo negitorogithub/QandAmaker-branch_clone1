@@ -5,14 +5,17 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 
@@ -26,6 +29,8 @@ public class ResultFragment extends Fragment {
     Button bTFinish;
     Fragment thisFragment;
     OnResultFragmentFinishListener onResultFragmentFinishListener;
+    private InterstitialAd mInterstitialAd;
+
     public ResultFragment() {
         // Required empty public constructor
     }
@@ -39,6 +44,42 @@ public class ResultFragment extends Fragment {
             questionsAmount = bundle.getInt("QUESTION_AMOUNT");
             correctAmount = bundle.getInt("CORRECT_AMOUNT");
         }
+        mInterstitialAd = new InterstitialAd(getActivity());
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Log.i("Ads", "onAdLoaded");
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+                Log.i("Ads", "onAdFailedToLoad");
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+                Log.i("Ads", "onAdOpened");
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+                Log.i("Ads", "onAdLeftApplication");
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the interstitial ad is closed.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                Log.i("Ads", "onAdClosed");
+            }
+        });
+
     }
 
     @Override
@@ -49,19 +90,26 @@ public class ResultFragment extends Fragment {
         tVResult = (TextView)view.findViewById(R.id.textViewResult) ;
         String messageToShow =getString(R.string.resultMessage,String.valueOf(questionsAmount),String.valueOf(correctAmount));
         tVResult.setText(messageToShow);
+        MobileAds.initialize(MyApplication.getAppContext());
+        adView = (AdView)view.findViewById(R.id.adViewOnExamFragment);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("71FDD2458B24F37418B39566411942D2").build();
+        adView.loadAd(adRequest);
         bTFinish = (Button)view.findViewById(R.id.buttonFinish);
         bTFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MyApplication.adCount++;
+                if (mInterstitialAd.isLoaded()) {
+                    if (MyApplication.adCount%5 == 2) {
+                        mInterstitialAd.show();
+                    }
+                }
                 if (onResultFragmentFinishListener != null) {
                     onResultFragmentFinishListener.onResultFragmentFinish();
                 }
             }
         });
-        MobileAds.initialize(MyApplication.getAppContext());
-        adView = (AdView)view.findViewById(R.id.adViewOnExamFragment);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+
 
         return view;
     }
@@ -89,6 +137,7 @@ public class ResultFragment extends Fragment {
         if (adView != null) {
             adView.destroy();
         }
+
         super.onDestroy();
     }
     @Override

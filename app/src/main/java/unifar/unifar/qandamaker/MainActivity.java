@@ -26,6 +26,11 @@ import android.widget.ListView;
 import android.widget.Space;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
     public static int int_onLonglistView_Position;
     public static int int_onListViewPositionOn2;
     public MainActivity mainActivity;
+    private InterstitialAd mInterstitialAd;
     FragmentManager fragmentManager = getFragmentManager();
     Toolbar toolbar;
     FloatingActionButton fab;
@@ -83,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
     MaterialShowcaseSequence materialShowcaseSequenceThird;
     MaterialShowcaseSequence materialShowcaseSequenceForth;
     MaterialShowcaseSequence materialShowcaseSequenceFifth;
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -118,10 +126,46 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
                 mainQuestionsDataBuffer,
                 fragmentManager
         );
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Log.i("Ads", "onAdLoaded");
+            }
 
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+                Log.i("Ads", "onAdFailedToLoad");
+            }
 
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+                Log.i("Ads", "onAdOpened");
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+                Log.i("Ads", "onAdLeftApplication");
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the interstitial ad is closed.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                Log.i("Ads", "onAdClosed");
+            }
+        });
         inputQbookFiles();
-        toQbooksList();
+        toQbooksList(false);
         R_id_listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -311,7 +355,10 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                toQbooksList();
+
+
+
+                toQbooksList(true);
                 return true;
             case R.id.action_settings:
                 return true;
@@ -572,7 +619,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (MyApplication.viewFlag == 2) {
-                toQbooksList();
+                toQbooksList(true);
                 return false;
             } else {
                 return super.onKeyDown(keyCode, event);
@@ -871,7 +918,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
         showQuestionTutorial();
     }
 
-    private void toQbooksList() {
+    private void toQbooksList(Boolean isShowAd) {
         MyApplication.viewFlag = 1;
         Log.d("OnQbook", "2 -> 1");
         listData.clear();
@@ -884,6 +931,15 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        if (isShowAd){
+            MyApplication.adCount++;
+            if (mInterstitialAd.isLoaded()) {
+                    if (MyApplication.adCount%5 == 2) {
+                        mInterstitialAd.show();
+                    }
+                }
+            }
     }
 
     /**
