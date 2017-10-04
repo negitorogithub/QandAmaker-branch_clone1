@@ -8,6 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Space;
+
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class FlashActivity extends AppCompatActivity implements Fragment_flash.OnFragmentInteractionListener, ParentActivityFinishInterface{
 
@@ -36,7 +40,26 @@ public class FlashActivity extends AppCompatActivity implements Fragment_flash.O
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.container_detail_flash, fragment_flash);
         fragmentTransaction.commit();
+        showFirstTutorials();
+    }
 
+    private void showFirstTutorials() {
+        MaterialShowcaseSequence materialShowcaseSequence = new MaterialShowcaseSequence(this, "40012");
+        Space dummy = (Space) findViewById(R.id.dummyOnFlash);
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500);
+        materialShowcaseSequence.setConfig(config);
+
+        materialShowcaseSequence.addSequenceItem(dummy,
+                "ここでは、問題文と解答を自動で切り替えて暗記できます",
+                getString(R.string.ok));
+        materialShowcaseSequence.addSequenceItem(dummy,
+                "声に出したり  頭の中で読んだり  \n自分に合った方法で暗記しましょう",
+                getString(R.string.ok));
+        materialShowcaseSequence.addSequenceItem(dummy,
+                "切り替えるタイミングは  下のバーで調整できます",
+                getString(R.string.ok));
+        materialShowcaseSequence.start();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

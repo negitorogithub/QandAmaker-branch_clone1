@@ -41,6 +41,7 @@ public class ExamActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().beginTransaction().add(R.id.examActivityContainer, examfragment).commit();
+
     }
 
     @Override

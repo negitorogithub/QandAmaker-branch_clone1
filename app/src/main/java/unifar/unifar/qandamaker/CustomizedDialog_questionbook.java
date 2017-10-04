@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 // TODO:選択肢が一つの場合スキップ機能
@@ -260,9 +261,8 @@ public class CustomizedDialog_questionbook extends DialogFragment {
     @Override
     public void onStart(){
         super.onStart();
-        showTutorial();
     }
-
+/*
     void showTutorial(){
         dummy = (Space) view.findViewById(R.id.dummyOnInoutDialog);
         materialShowcaseSequence = new MaterialShowcaseSequence(getActivity(),"20012");
@@ -281,7 +281,7 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                 getString(R.string.ok));
         materialShowcaseSequence.start();
     }
-
+*/
     @Override
     public  void onActivityCreated(Bundle savedInstansState){
         super.onActivityCreated(savedInstansState);

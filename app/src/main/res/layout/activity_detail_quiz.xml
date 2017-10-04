@@ -30,5 +30,10 @@
 
     </RelativeLayout>
 
+    <Space
+        android:id="@+id/dummyOnDetailQuiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
 </android.support.design.widget.CoordinatorLayout>

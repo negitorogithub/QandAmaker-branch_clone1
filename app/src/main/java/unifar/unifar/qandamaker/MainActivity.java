@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 // TODO:OnPause()時のBundleの実装
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
     Space dummy;
     MaterialShowcaseSequence materialShowcaseSequenceThird;
     MaterialShowcaseSequence materialShowcaseSequenceForth;
-
+    MaterialShowcaseSequence materialShowcaseSequenceFifth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -175,7 +176,8 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
                 customizedDialog_questionbook.show(getFragmentManager(), "firstInputDialog");
             }
         });
-
+        materialShowcaseSequenceFifth = new MaterialShowcaseSequence(this, "100511");
+        dummy = (Space) findViewById(R.id.dummyView);
         showFirstTutorial();
 
     }
@@ -188,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
     }
 
     void showFirstTutorial(){
-        dummy = (Space) findViewById(R.id.dummyView);
         materialShowcaseSequenceFirst = new MaterialShowcaseSequence(this,"10011");
         materialShowcaseSequenceFirst.setConfig(config);
 
@@ -230,13 +231,22 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
             materialShowcaseSequenceThird.setConfig(config);
 
             materialShowcaseSequenceThird.addSequenceItem(dummy,
-                    "ここでは問題を追加  削除  編集\nすることができます",
-                    getString(R.string.ok));
+                "ここでは問題を追加  削除  編集\nすることができます",
+                getString(R.string.ok));
 
             materialShowcaseSequenceThird.addSequenceItem(fab,
-                    "新しい問題を追加するには\nこの[+]ボタンを押してください",
+                "問題には  問題文  解答  タグ  を設定できます  \n同じタグがつけられた問題の解答は試験で選択肢になります",
+                getString(R.string.ok));
+
+            materialShowcaseSequenceThird.addSequenceItem(fab,
+                "タグ機能は、同じ問題集の中で使うことができます",
+                getString(R.string.ok));
+
+        materialShowcaseSequenceThird.addSequenceItem(fab,
+                "新しい問題を追加するには\nこの[+]ボタンを押してください",
                     getString(R.string.ok));
-            materialShowcaseSequenceThird.start();
+
+        materialShowcaseSequenceThird.start();
         }
 
     void showQuestionAddedTutorial(){
@@ -245,21 +255,22 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
             materialShowcaseSequenceForth.setConfig(config);
 
             materialShowcaseSequenceForth.addSequenceItem(dummy,
-                    "問題が追加できました！",
-                    getString(R.string.ok));
-
+                "問題が追加できました！",
+                getString(R.string.ok));
             materialShowcaseSequenceForth.addSequenceItem(examView,
-                    "試験をするにはこのアイコンをクリックします\n試験では  選択式の問題が出題されます",
-                    getString(R.string.ok));
-
+                "試験をするにはこのアイコンをクリックします\n試験では  選択式の問題が出題されます",
+                 getString(R.string.ok));
             materialShowcaseSequenceForth.addSequenceItem(dummy,
-                    "左の３つの丸は、最近３回の試験で正解した回数を表しています",
-                    getString(R.string.ok));
-            materialShowcaseSequenceForth.addSequenceItem(dummy,
-                    "問題を編集するには、右の鉛筆アイコンをクリックします",
+                "左の３つの丸は、最近３回の試験で正解した回数を表しています",
                 getString(R.string.ok));
             materialShowcaseSequenceForth.addSequenceItem(dummy,
-                    "問題を削除するには、問題を長押しします",
+                "問題を編集するには、右の鉛筆アイコンをクリックします",
+                getString(R.string.ok));
+            materialShowcaseSequenceForth.addSequenceItem(dummy,
+                "問題を削除するには、問題を長押しします",
+                getString(R.string.ok));
+            materialShowcaseSequenceForth.addSequenceItem(dummy,
+                "では  問題をクリックしてみましょう",
                 getString(R.string.ok));
 
         materialShowcaseSequenceForth.start();
@@ -690,9 +701,40 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
     private void showExamFragment() {
         Log.d("OnQbook", "// do test");
         if (qlistData.size() != 0) {
-            ExamDialogFragment examDialogFragment = new ExamDialogFragment();
-            examDialogFragment.show(getFragmentManager(), "ExamDialogFragment");
+            if (materialShowcaseSequenceFifth.hasFired()) {
+                ExamDialogFragment examDialogFragment = new ExamDialogFragment();
+                examDialogFragment.show(getFragmentManager(), "ExamDialogFragment");
+            }else {
+                showExamTutorial();
+            }
         }
+
+    }
+
+    private void showExamTutorial() {
+        materialShowcaseSequenceFifth.setConfig(config);
+
+        materialShowcaseSequenceFifth.addSequenceItem(dummy,
+                "これから試験を始めます",
+                getString(R.string.ok));
+        materialShowcaseSequenceFifth.addSequenceItem(dummy,
+                "出題数と出題モードを設定できます",
+                getString(R.string.ok));
+        materialShowcaseSequenceFifth.addSequenceItem(dummy,
+                "出題モード  ランダム  では適当に  おすすめ  では正解数が少ない順にテストできます",
+                getString(R.string.ok));
+        materialShowcaseSequenceFifth.start();
+        materialShowcaseSequenceFifth.setOnItemDismissedListener(new MaterialShowcaseSequence.OnSequenceItemDismissedListener() {
+            @Override
+            public void onDismiss(MaterialShowcaseView materialShowcaseView, int i) {
+
+                if (i == 2) {
+                    ExamDialogFragment examDialogFragment = new ExamDialogFragment();
+                    examDialogFragment.show(getFragmentManager(), "ExamDialogFragment");
+                }
+
+            }
+        });
     }
 
     public static List<String> makeAlterrnatives(String file, String tagName, String answer) {
