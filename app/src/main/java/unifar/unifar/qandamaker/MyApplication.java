@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.squareup.leakcanary.LeakCanary;
 
+import hotchemi.android.rate.AppRate;
+
 
 public class MyApplication extends Application {
     public static Context context;
@@ -22,6 +24,12 @@ public class MyApplication extends Application {
         bundle.putBoolean("isEditMode", false);
         adCount = 0;
         viewFlag = 0;
+        AppRate.with(this)
+                .setInstallDays(0) // default 10, 0 means install day.
+                .setLaunchTimes(14) // default 10
+                .setRemindInterval(2) // default 1
+                .setShowLaterButton(true) // default true
+                .monitor();
     }
 
     public static Context getAppContext() {

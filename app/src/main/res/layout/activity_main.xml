@@ -15,8 +15,9 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="80dp"
+        android:background="@color/colorAccentDark"
         app:elevation="6dp"
         app:layout_anchor="@+id/activityMain_relativeLayout"
         app:layout_anchorGravity="bottom|right"
@@ -84,7 +85,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+            ads:adUnitId="ca-app-pub-6418178360564076/5665941339" />
 
 
     </RelativeLayout>

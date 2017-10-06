@@ -69,7 +69,7 @@ public class DetailQuizActivity extends AppCompatActivity implements Fragment_fl
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         showFirstTutorials();
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-6418178360564076/5226301095");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         mInterstitialAd.setAdListener(new AdListener() {
             @Override

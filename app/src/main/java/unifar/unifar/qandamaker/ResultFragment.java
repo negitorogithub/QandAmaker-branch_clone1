@@ -45,7 +45,7 @@ public class ResultFragment extends Fragment {
             correctAmount = bundle.getInt("CORRECT_AMOUNT");
         }
         mInterstitialAd = new InterstitialAd(getActivity());
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-6418178360564076/2752180992");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         mInterstitialAd.setAdListener(new AdListener() {
             @Override

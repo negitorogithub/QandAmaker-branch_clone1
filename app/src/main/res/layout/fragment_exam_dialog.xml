@@ -35,10 +35,11 @@
 
         <NumberPicker
             android:id="@+id/numberPicker"
-            android:layout_weight="0.7"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-             />
+            android:layout_weight="0.7"
+            android:scrollbarSize="40dp" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -42,6 +42,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import hotchemi.android.rate.AppRate;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-6418178360564076/4953826591");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
         materialShowcaseSequenceFifth = new MaterialShowcaseSequence(this, "100511");
         dummy = (Space) findViewById(R.id.dummyView);
         showFirstTutorial();
-
+        AppRate.showRateDialogIfMeetsConditions(this);
     }
 
     @Override
@@ -337,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener, E
         switch (MyApplication.viewFlag) {
             case 1:
                 menu.clear();
-                getMenuInflater().inflate(R.menu.menu_main, menu);
+                //getMenuInflater().inflate(R.menu.menu_main, menu);
                 break;
             case 2:
                 menu.clear();

@@ -6,11 +6,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 
 /**
@@ -31,6 +36,7 @@ public class Fragment_flash extends Fragment  {
     TextView textView_switch;
     private OnFragmentInteractionListener mListener;
     private ParentActivityFinishInterface parentActivityFinishInterface;
+    private InterstitialAd mInterstitialAd;
 
     public Fragment_flash() {
         // Required empty public constructor
@@ -50,6 +56,42 @@ public class Fragment_flash extends Fragment  {
         str_answer_name = args.getString("answer_name");
         if (getArguments() != null) {
         }
+        mInterstitialAd = new InterstitialAd(getActivity());
+        mInterstitialAd.setAdUnitId("ca-app-pub-6418178360564076/9892621647");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Log.i("Ads", "onAdLoaded");
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+                Log.i("Ads", "onAdFailedToLoad");
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+                Log.i("Ads", "onAdOpened");
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+                Log.i("Ads", "onAdLeftApplication");
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the interstitial ad is closed.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                Log.i("Ads", "onAdClosed");
+            }
+        });
+
     }
 
     @Override
@@ -147,7 +189,12 @@ public class Fragment_flash extends Fragment  {
     @Override
     public void onDetach() {
         super.onDetach();
-
+        MyApplication.adCount++;
+        if (mInterstitialAd.isLoaded()) {
+            if (MyApplication.adCount%5 == 2) {
+                mInterstitialAd.show();
+            }
+        }
         parentActivityFinishInterface.finishParentActivity();
         mListener = null;
         parentActivityFinishInterface = null;

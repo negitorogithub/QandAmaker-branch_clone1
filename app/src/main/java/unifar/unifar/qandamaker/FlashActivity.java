@@ -69,6 +69,7 @@ public class FlashActivity extends AppCompatActivity implements Fragment_flash.O
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
+
                 finish();
                 return true;
         }
