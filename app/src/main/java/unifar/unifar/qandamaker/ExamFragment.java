@@ -1,8 +1,10 @@
 package unifar.unifar.qandamaker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -177,7 +179,32 @@ public class ExamFragment extends Fragment {
         }
 
     }
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) return;
+        onAttachContext(activity);
+}
 
+    private void onAttachContext(Context context) {
+        if (context instanceof OnFragmentInteractionListener) {
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+        if (context instanceof OnReachedLastQuestionListener) {
+            onReachedLastQuestionListener = (OnReachedLastQuestionListener) context;
+        }else{
+            throw new ClassCastException("activity が OnOkBtnClickListener を実装していません.");
+        }
+        if (context instanceof ExamFinishedListener) {
+            examFinishedListener = (ExamFinishedListener) context;
+        }else{
+            throw new ClassCastException("activity が ExamFinishedListener を実装していません.");
+        }
+
+
+    }
     @Override
     public void onDetach() {
         super.onDetach();

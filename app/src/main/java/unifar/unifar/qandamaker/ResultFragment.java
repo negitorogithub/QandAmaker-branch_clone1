@@ -1,8 +1,10 @@
 package unifar.unifar.qandamaker;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -153,5 +155,26 @@ public class ResultFragment extends Fragment {
         }else{
             throw new ClassCastException("activity が OnResultFragmentFinishListener を実装していません.");
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) return;
+        onAttachContext(activity);
+    }
+
+    private void onAttachContext(Context context) {
+        if (context instanceof OnFragmentInteractionListener) {
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+        if (context instanceof OnResultFragmentFinishListener) {
+            onResultFragmentFinishListener =(OnResultFragmentFinishListener)context;
+        }else{
+            throw new ClassCastException("activity が OnResultFragmentFinishListener を実装していません.");
+        }
+
     }
 }

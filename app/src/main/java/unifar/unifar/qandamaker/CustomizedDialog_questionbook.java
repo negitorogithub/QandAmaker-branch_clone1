@@ -1,9 +1,11 @@
 package unifar.unifar.qandamaker;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -42,11 +44,15 @@ public class CustomizedDialog_questionbook extends DialogFragment {
     public DialogListener dialogListener;
     public static final String IsRecreatedKeyStr = "isRecreated";
     String tagArray[];
+    //String answerInputstr;
     static View view;
     MaterialShowcaseSequence materialShowcaseSequence;
     ShowcaseConfig config;
     Space dummy;
     Boolean isOkPressedOn3;
+    //private String et_questionstr;
+    //private String tagInputstr;
+
     public static CustomizedDialog_questionbook newInstance() {
         questionName = "";
         answerName = "";
@@ -73,6 +79,22 @@ public class CustomizedDialog_questionbook extends DialogFragment {
         tagSet.toArray(tagArray);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) return;
+        onAttachContext(activity);
+    }
+    private void onAttachContext(Context context) {
+        Log.d("onqbook","Dialog onattach");
+        if (context instanceof DialogListener) {
+            dialogListener = (DialogListener) context;
+        }
+        tagSet = new LinkedHashSet<>(MainActivity.getTaglistData());
+        tagArray = new String[tagSet.size()];
+        tagSet.toArray(tagArray);
+
+    }
     @Override
     public void onDetach() {
         super.onDetach();
@@ -102,13 +124,16 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                 case 1:
                     view = inflater.inflate(R.layout.questionbookinput,null , false);
                     et_question = (EditText) view.findViewById(R.id.questionbox);
-                break;
+                    //et_questionstr = deleteSeparator(String.valueOf(et_question.getText()));
+                    break;
                 case 2:
                     Log.d("onqbook","onCreateDialog @viewFlag = 2");
                     view = inflater.inflate(R.layout.questionbookinput,null , false);
                     addTagSetTotagSpinnerAdapterAndInflateView();
                     et_question = (EditText) view.findViewById(R.id.questionbox);
+                    //et_questionstr = String.valueOf(et_question.getText());
                     answerInput = (EditText) view.findViewById(R.id.answerbox);
+                    //answerInputstr = String.valueOf(answerInput.getText());
                     tagSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -121,8 +146,8 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                                     if (position == 0) {
                                         //タグ新規作成のダイアログ作成
                                         if (MyApplication.viewFlag == 2) {
-                                            MyApplication.bundle.putString("answerStr", ifNullReplace(String.valueOf(answerInput.getText())));
-                                            MyApplication.bundle.putString("questionStr", ifNullReplace(String.valueOf(et_question.getText())));
+                                            MyApplication.bundle.putString("answerStr",getanswerInput());
+                                            MyApplication.bundle.putString("questionStr", getet_Question());
                                             MyApplication.viewFlag = 3;
                                             Log.d("onqbook", "2 -> 3");
                                         }
@@ -151,7 +176,7 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                 case 3:
                     view = inflater.inflate(R.layout.tag_edit_dialog, null, false);
                     tagInput =(EditText)view.findViewById(R.id.tagBox);
-
+                    //tagInputstr = deleteSeparator(String.valueOf(tagInput.getText()));
                     break;
             }
         }
@@ -187,19 +212,18 @@ public class CustomizedDialog_questionbook extends DialogFragment {
             public void onClick(View v){
 
                 if (MyApplication.viewFlag ==1 || MyApplication.viewFlag ==2 ) {
-                    if (ifNullReplace(String.valueOf(et_question.getText())).equals("")){
+                    if (getet_Question().equals("")){
                         Toast.makeText(MyApplication.getAppContext(), getString(R.string.questionInputEmpty),Toast.LENGTH_LONG).show();
                         return;
                     }
-                    if (MainActivity.makeListFromQuetionArray(MainActivity.mainQuestionsDataBuffer, MainActivity.INT_QfileQuestionIndex).contains(ifNullReplace(String.valueOf(et_question.getText())))) {
+                    if (MainActivity.makeListFromQuetionArray(MainActivity.mainQuestionsDataBuffer, MainActivity.INT_QfileQuestionIndex).contains(getet_Question())) {
                         if (!(MyApplication.bundle.getBoolean("isEditMode"))) {
                             Toast.makeText(MyApplication.getAppContext(), R.string.same_question_exsits,Toast.LENGTH_LONG).show();
                             return;
                         }
 
                     }
-                        MyApplication.bundle.putString("questionStr",ifNullReplace(String.valueOf(et_question.getText())));
-
+                        MyApplication.bundle.putString("questionStr",getet_Question());
 
                     if (MyApplication.viewFlag == 2) {
                         if (String.valueOf(answerInput.getText()).equals("")){
@@ -212,7 +236,7 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                                 return;
                             }
                         }
-                        MyApplication.bundle.putString("answerStr",ifNullReplace(String.valueOf(answerInput.getText())));
+                        MyApplication.bundle.putString("answerStr",getanswerInput());
                         MyApplication.bundle.putString("str_tag_name",ifNullReplace(String.valueOf(tagSpinner.getSelectedItem())));
                     }
                 }
@@ -221,13 +245,13 @@ public class CustomizedDialog_questionbook extends DialogFragment {
                         Toast.makeText(MyApplication.getAppContext(), getString(R.string.tagInputEmpty),Toast.LENGTH_LONG).show();
                         return;
                     }
-                    if (MainActivity.makeListFromQuetionArray(MainActivity.mainQuestionsDataBuffer, MainActivity.INT_QfileTagIndex).contains(ifNullReplace(String.valueOf(tagInput.getText())))) {
+                    if (MainActivity.makeListFromQuetionArray(MainActivity.mainQuestionsDataBuffer, MainActivity.INT_QfileTagIndex).contains(gettagInput())) {
                         if (!(MyApplication.bundle.getBoolean("isEditMode"))) {
                             Toast.makeText(MyApplication.getAppContext(), R.string.same_tag_exists, Toast.LENGTH_LONG).show();
                             return;
                         }
                     }
-                    MyApplication.bundle.putString("str_tag_name",ifNullReplace(String.valueOf(tagInput.getText())));
+                    MyApplication.bundle.putString("str_tag_name",gettagInput());
                     MyApplication.bundle.putBoolean(IsRecreatedKeyStr, true);
                 }
                     if (dialogListener != null) {
@@ -257,6 +281,15 @@ public class CustomizedDialog_questionbook extends DialogFragment {
         return dialog;
     }
 
+    private String getet_Question(){
+        return deleteSeparator(ifNullReplace(String.valueOf(et_question.getText())));
+    }
+    private String getanswerInput(){
+        return deleteSeparator(ifNullReplace(String.valueOf(answerInput.getText())));
+    }
+    private String gettagInput(){
+        return deleteSeparator(ifNullReplace(String.valueOf(tagInput.getText())));
+    }
 
     @Override
     public void onStart(){
@@ -298,6 +331,11 @@ public class CustomizedDialog_questionbook extends DialogFragment {
         }
         return string;
     }
+    public static String deleteSeparator(String string){
+        final String BR = System.getProperty("line.separator");
+        return string.replaceAll(BR,"");
+    }
+
     @Override
     public void onPause(){
         super.onPause();

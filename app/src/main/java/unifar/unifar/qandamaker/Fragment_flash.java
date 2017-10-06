@@ -1,7 +1,9 @@
 package unifar.unifar.qandamaker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -186,6 +188,28 @@ public class Fragment_flash extends Fragment  {
 
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) return;
+        onAttachContext(activity);
+    }
+
+    private void onAttachContext(Context context) {
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+        if (context instanceof ParentActivityFinishInterface) {
+            parentActivityFinishInterface = (ParentActivityFinishInterface) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement ParentActivityFinishInterface");
+        }
+
+    }
     @Override
     public void onDetach() {
         super.onDetach();
