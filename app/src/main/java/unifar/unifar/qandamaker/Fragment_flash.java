@@ -17,7 +17,11 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+
+import static unifar.unifar.qandamaker.CustomizedDialog_questionbook.view;
 
 
 /**
@@ -39,6 +43,7 @@ public class Fragment_flash extends Fragment  {
     private OnFragmentInteractionListener mListener;
     private ParentActivityFinishInterface parentActivityFinishInterface;
     private InterstitialAd mInterstitialAd;
+    private AdView adView;
 
     public Fragment_flash() {
         // Required empty public constructor
@@ -58,6 +63,7 @@ public class Fragment_flash extends Fragment  {
         str_answer_name = args.getString("answer_name");
         if (getArguments() != null) {
         }
+
         mInterstitialAd = new InterstitialAd(getActivity());
         mInterstitialAd.setAdUnitId("ca-app-pub-6418178360564076/9892621647");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
@@ -107,6 +113,10 @@ public class Fragment_flash extends Fragment  {
         int_seekBar_progress = 500;
         seekBar.setProgress(int_seekBar_progress);
         seekBar.setMax(10000);
+        MobileAds.initialize(MyApplication.getAppContext());
+        adView = (AdView)rootView.findViewById(R.id.adViewOnFlash);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
 
         seekBar.setOnSeekBarChangeListener(
@@ -161,6 +171,30 @@ public class Fragment_flash extends Fragment  {
 
 
         return rootView;
+    }
+    @Override
+    public void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+
+        super.onDestroy();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

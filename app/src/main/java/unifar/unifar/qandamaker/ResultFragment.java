@@ -94,7 +94,7 @@ public class ResultFragment extends Fragment {
         tVResult.setText(messageToShow);
         MobileAds.initialize(MyApplication.getAppContext());
         adView = (AdView)view.findViewById(R.id.adViewOnExamFragment);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("71FDD2458B24F37418B39566411942D2").build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
         bTFinish = (Button)view.findViewById(R.id.buttonFinish);
         bTFinish.setOnClickListener(new View.OnClickListener() {
